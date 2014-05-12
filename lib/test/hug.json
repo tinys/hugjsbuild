@@ -1,0 +1,13 @@
+{
+	"js":{
+		"basePath":"./js/",
+		"alias":[]
+	},
+	"css":{
+	},
+	"output":"",
+	"outputSrc":"",
+	"outputType":[".js",".css",".png",".gif",".jpg",".swf"],
+	"outputCSS":[],
+	"outputJS":[]
+}

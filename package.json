@@ -1,0 +1,40 @@
+{
+  "name": "hugjs",
+  "version": "1.1.1",
+  "preferGlobal": "true",
+  "description": "build tools based seajs used in mobile",
+  "author": "tiny051401@163.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tinys/spm2.git"
+  },
+  "keywords": [
+    "seajs",
+    "mobile project build tools"
+  ],
+  "dependencies": {
+    "clean-css": "2.1.8",
+    "ejs": "1.0.0",
+    "express": "3.3.4",
+    "node-uuid": "*",
+    "request": "2.34.0",
+    "uglifyjs": "2.3.6",
+    "async":"0.7.0",
+    "node-smushit": "0.5.1",
+    "jszip":"2.2.0"
+  },
+  "devDependencies": {},
+  "bin": {
+    "hugjs": "bin/hugjs"
+  },
+  "engines": {
+    "node": ">=0.8.19"
+  },
+  "scripts": {},
+  "bugs": {
+    "url": "https://github.com/spmjs/spm2/issues"
+  },
+  "homepage": "https://github.com/spmjs/spm2",
+  "main": "index.js",
+  "license": "ISC"
+}

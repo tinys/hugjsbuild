@@ -1,0 +1,33 @@
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title><%=path%></title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+  <style>
+  li{
+  	height:36px;
+  	max-width:320px;
+  }
+  li .fr{
+  	float:right;
+  }
+  </style>
+  </head>
+  <body>
+    <div>
+      <ul class="ul" id="fileList">
+        <li><a href="<%=parent%>..">...</a></li>
+      <% for(var i=0; i<fileList.length; i++) {%>
+         <li>
+           <a href="<%= fileList[i].reqUrl %>"><%= fileList[i].name %></a>
+           <%if(fileList[i].isPro){%>
+          	 <a class="fr" href="<%=downHost%>/zipPro?proName=<%=fileList[i].name%>">下载</a>
+           <%}else if(fileList[i].isDirectory){%>
+           	<a class="fr" href="<%=downHost%>/zipFoloder?proName=<%=fileList[i].dest%>">下载</a>
+           <%}%>
+         </li>
+      <% } %>
+      </ul>
+    </div>
+  </body>
+</html>

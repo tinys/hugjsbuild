@@ -1,0 +1,329 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+        <title>发布工具</title>
+        <style>
+            html {
+            }
+            body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, input, textarea, p, blockquote, th, td, header, footer, nav, article {
+                margin: 0;
+                padding: 0
+            }
+            body {
+                height: 100%;
+                font: 16px / 1.5 Helvetica, Arial, sans-serif;
+            }
+            input, textarea, select, button {
+                outline: none;
+                resize: none;
+                font: 16px / 1.5 Helvetica, Arial, sans-serif;
+            }
+            .main_con {
+                margin: 20px 20px;
+            }
+            .form_input {
+                background-color: #eee;
+            }
+            fieldset {
+                -webkit-border-radius: 8;
+                -moz-border-radius: 8;
+                -o-border-radius: 8;
+                border-radius: 8;
+            }
+            .pub-val {
+                margin-top: 10px;
+                width: 400px;
+            }
+            .pub-val .text {
+                width: 100%;
+            }
+			.pub-val .text70{
+				width: 70%;
+			}
+			.text30{
+				width: 30%;
+			}
+            .pub-val .exp {
+                color: #666;
+                font-size: 12px;
+            }
+            .button {
+                background: #5CC26F;
+                color: #fff;
+                text-decoration: none;
+                height: 30px;
+                float: left;
+                margin: 0 5px;
+                border: 0px solid #000;
+                font-weight: bold;
+                cursor: pointer;
+                border-radius:3px;
+            }
+            .button span {
+                color: #fff;
+                float: left;
+                margin: 0 0 0 12px;
+                padding: 0 12px 0 0;
+                height: 30px;
+                line-height: 28px;
+            }
+			.beautify input{
+				width:15px;
+				height:15px;
+				margin:5px;
+			}
+			.ul {
+                width: 400px;
+            }
+            .ul li {
+                margin-top: 8px;
+            }
+            .ul a {
+            }
+            .fr {
+                float: right;
+                text-decoration: none;
+                color: #797C5E;
+            }
+            .tips{
+            	font-size:12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main_con">
+                <div id="mainContent" class="form_input">
+                    <fieldset id="formField">
+			            <form action="/pub" method="post" id="pubForm">
+                        <legend>
+                            <b>压缩打包发布工具</b>
+                        </legend>
+                        <div class="pub-val">
+                            <div class="msg">选择项目:</div>
+                            <div class="msg-input">
+                                <select name="proName" class="text">
+                                <%for(var i = 0 ; i < proList.length;i++){%>
+                                    <option value="<%=proList[i].pro%>"><%=proList[i].pro%></option>
+                                <%}%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pub-val">
+                            <span class="beautify">
+                               	 <label><input type="checkbox" id="beautify" name="beautify" value="1" checked="checked">是否压缩</label>
+                            </span>
+                            <span class="msg beautify">
+                               	 <label><input type="checkbox" id="need_source" name="need_source" value="1" rel="addsource" checked="checked">源文件</label>
+                            </span>
+							<span class="msg beautify">
+                               	 <label><input type="checkbox" id="needVersion" name="needVersion" value="1" rel="addVersion" checked="checked">版本控制</label>
+                            </span>
+                        </div>
+                        <div class="pub-val addsource">
+                            <div class="msg">
+                            	源文件后缀:<input type="text" class="text30" name="sourcesiffix" value="_src"> <span class="tips">例如:/common_src.js</span>
+                            </div>
+                        </div>
+                        <div class="pub-val addVersion">
+                            <div class="msg">
+								<span class="beautify">
+									版本方式：
+									<select class="text30" name="versionType" id="versionType">
+										<option value="1">版本号</option>
+										<option value="2">文件夹</option>
+										<option value="3">文件名</option>
+									</select>
+	                            </span>
+	                            <span class="tips">例如:/folder/js/common.js?v=1.11</span>
+                            </div>
+                        </div>
+                        <div class="pub-val addVersion">
+                            <div class="msg">
+                            	版本号:<input type="text" class="text70" name="version">
+                            </div>
+                        </div>
+                        <div class="pub-val">
+                            <a class="button" href="javascript:;" id="pubButton"><span>合并</span></a>
+                        </div>
+			            </form>
+                    </fieldset>
+                    <div>
+                    <!--
+                                                              你还可以 <a href="javascript:;" title="暂无此功能">svn打包发布</a>
+                        <a href="javascript:;" title="暂无此功能">服务配置</a>
+                     -->
+                    </div>
+                    <div style="font-size:12px;color:#666;">
+                        ps:鄙视使用IE进行打包
+                    </div>
+                </div>
+                </div>
+        </div>
+        <script type="text/javascript" src="jquery-1.11.0.js"></script>
+        <div id="prolistData" style="display:none;"><%=JSON.stringify(proList)%></div>
+        <script type="text/javascript">
+        var inputUtil = {
+			setValue:function(name,value){
+				var inputs = document.getElementsByName(name)||document.getElementsById(name);
+				inputs = Array.prototype.slice.call(inputs,[]);
+				if(!inputs.length){
+					return;
+				}
+				var input = inputs[0];
+				var type = input.tagName.toLowerCase();
+				if(type != "select"){
+					type = input.type.toLowerCase();
+				}
+				switch(type.toLowerCase()){
+				case "select":
+					var options = input.children;
+					for(var i = 0 ; i < options.length;i++){
+						if(options[i].value == value){
+							options[i].selected = "selected";
+							break;
+						}
+					}
+				break;
+				case "checkbox":
+					for(var i = 0 ; i < inputs.length;i++){
+						if(value.indexOf(inputs[i].value) >=0){
+							inputs[i].checked="checked";
+						}else{
+							inputs[i].checked=false;
+						}
+					}
+				break;
+				case "radio":
+					for(var i = 0 ; i < inputs.length;i++){
+						if(inputs[i].value == value){
+							inputs[i].checked="checked";
+						}
+					}
+				break;
+				default:
+					input.value = value
+				}
+			},
+			getValue:function(name){
+				if(!name){
+					return null;
+				}
+				var inputs = document.getElementsByName(name)||document.getElementsById(name);
+				if(!inputs){
+					return null;
+				}
+				var input = inputs[0],
+							value;
+				var type = input.tagName.toLowerCase();
+				if(type != "select"){
+					type = input.type.toLowerCase();
+				}
+				switch(type.toLowerCase()){
+				case "select":
+					var options = input.children;
+					for(var i = 0 ; i < options.length;i++){
+						if(options[i].selected){
+							value = options[i].value
+							break;
+						}
+					}
+				break;
+				case "checkbox":
+					value = [];
+					for(var i = 0 ; i < inputs.length;i++){
+						if(inputs[i].checked){
+							value.push(inputs[i].value);
+						}
+					}
+				break;
+				case "radio":
+					for(var i = 0 ; i < inputs.length;i++){
+						if(inputs[i].checked){
+							value = inputs[i].value;
+							break;
+						}
+					}
+				break;
+				default: 
+					value = input.value;
+				}
+				return value;
+			}
+		}
+        
+		$(document.body).ready(function(){
+					
+			var proList = JSON.parse($("#prolistData")[0].innerText);
+			function relateShow(cName,show){
+				show?$("."+cName).show():$("."+cName).hide()
+			}
+			function checkRelate(id){
+				var checkbox = document.getElementById(id);
+				if(checkbox){
+					var relate = checkbox.getAttribute("rel");
+					if(relate){
+						relateShow(relate,checkbox.checked)
+					}
+				}
+			}
+			$("#need_source").click(function(){
+				relateShow("addsource",this.checked);
+			})
+			$("#needVersion").click(function(){
+				relateShow("addVersion",this.checked);
+			})
+			function saveDefault(){
+				var form = $("#pubForm")[0],
+					elements = form.elements;
+				var obj = {},
+					proName ="";
+				for(var i = 0 ; i < elements.length;i++){
+					var name = elements[i].name;
+					if(name){
+						var value = inputUtil.getValue(name);
+						obj[name] = value;
+						if(name == "proName"){
+							proName = value;
+						}
+					}
+				}
+				if(proName){
+					localStorage[proName] = JSON.stringify(obj);
+					localStorage["usualPro"] = proName;
+				}
+			}
+			// 加载上次打包的
+			function loadUsual(){
+				var usualPro = localStorage["usualPro"];
+				if(usualPro){
+					var usualConfig = localStorage[usualPro];
+					if(usualConfig){
+						usualConfig = JSON.parse(usualConfig);
+						for(var i in usualConfig){
+							inputUtil.setValue(i,usualConfig[i]);
+						}
+					}
+				}
+				checkRelate("need_source");
+				checkRelate("needVersion");
+			};
+			// 检查输入是否正确
+			function checkInputs(){
+				
+			
+				return true;
+			}
+			var pubButton = $("#pubButton");
+			pubButton.click(function(){
+				if(!checkInputs()){
+					return false;
+				}
+				saveDefault();
+				$("#pubForm")[0].submit();
+			})
+			
+			loadUsual();
+		})
+        </script>
+    </body>
+</html>
