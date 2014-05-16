@@ -99,6 +99,7 @@ HugPub.prototype.doit = function(){
 // 合并后文件路径
 HugPub.prototype.getCombineDestPath = function(fp){
 	var _this = this;
+	fp = fp.replace(/\\/g,"/");
 	var abPath = fp.replace(_this.project.dest,"");
 	if(_this.project.needVersion){
 		var version = _this.project.version;
@@ -125,7 +126,9 @@ HugPub.prototype.getCombineDestPath = function(fp){
 }
 HugPub.prototype.getSourcePath = function(fp){
 	var _this = this;
+	fp = fp.replace(/\\/g,"/");
 	var abPath = fp.replace(_this.project.dest,"");
+	console.log(abPath)
 	var basePath = _this.cfg.output;
 	if(_this.project.sourcesiffix){
 		var dir = path.dirname(abPath),
