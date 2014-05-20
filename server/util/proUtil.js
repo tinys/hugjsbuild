@@ -135,6 +135,7 @@ function loadHugCfg(basePath){
 		}
 		hugc = hugCfg[basePath] = hug;
 	}
+	
 	// 如果未指定打包位置，则在项目统计目录增加proName_dest 目录
 	if(!hugc.output){
 		hugc.output = path.join(config.dftPubPublicDir);
