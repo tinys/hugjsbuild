@@ -128,7 +128,7 @@ HugPub.prototype.getCombineDestPath = function(fp){
 HugPub.prototype.getSourcePath = function(fp){
 	var _this = this;
 	fp = fp.replace(/\\/g,"/");
-	var abPath = fp.replace(_this.project.dest,"");
+	var abPath = fp.replace(_this.project.dest.replace(/\\/g,"/"),"");
 	var basePath = _this.cfg.output;
 	if(_this.project.sourcesiffix){
 		var dir = path.dirname(abPath),
