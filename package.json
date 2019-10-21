@@ -13,7 +13,7 @@
     "mobile project build tools"
   ],
   "dependencies": {
-    "clean-css": "2.1.8",
+    "clean-css": "4.2.1",
     "ejs": "1.0.0",
     "express": "3.3.4",
     "node-uuid": "*",
